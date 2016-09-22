@@ -94,7 +94,7 @@ class Restaurant extends React.Component {
                 {this.state.results}
                 <ActivityIndicator
                     animating={this.state.isLoading}
-                    color="#EEE"
+                    color="#111"
                     size="large"></ActivityIndicator>
             </View>
         )

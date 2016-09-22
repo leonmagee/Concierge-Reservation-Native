@@ -40,6 +40,17 @@ var styles = StyleSheet.create({
         color: '#222',
         alignSelf: 'center'
     },
+    button: {
+        height: 45,
+        flexDirection: 'row',
+        backgroundColor: '#08C5B1',
+        borderColor: '#08C5B1',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: 10,
+        justifyContent: 'center'
+    },
 });
 
 class RestaurantProfile extends React.Component {
@@ -58,10 +69,11 @@ class RestaurantProfile extends React.Component {
     processDiscount() {
         // try calling this with fat arrow function - won't need to bind 'this'?
         console.log('lets make a reservation!');
+        var myprops = {name: 'item 1', car: 'honda'};
         this.props.navigator.push({
             component: ReservationForm,
-            title: 'Reservation',
-            passProps: 'some props',
+            title: 'Make Reservation',
+            passProps: myprops
         })
     }
 
