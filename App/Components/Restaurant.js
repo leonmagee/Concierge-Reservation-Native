@@ -16,32 +16,36 @@ var styles = StyleSheet.create({
         paddingTop: 80,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#222',
+        backgroundColor: '#FAFAFA',
         flex: 1
-    },
-    image: {
-        height: 350
     },
     buttonText: {
         fontSize: 24,
         color: 'white',
-        alignSelf: 'center'
+        alignSelf: 'center',
+    },
+    restaurantWrap: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row',
     },
     restaurants: {
-        fontSize: 24,
-        //flex: 1,
+        fontSize: 19,
         padding: 10,
-        backgroundColor: '#F7F7F7',
-        textAlign: 'center'
-        // flexDirection: 'row',
-        // alignSelf: 'stretch',
-        // justifyContent: 'center',
-        // flex: 1
+        color: '#222',
+        fontWeight: 'bold',
+    },
+    dot: {
+        backgroundColor: '#08C5B1',
+        borderRadius: 6,
+        height: 12,
+        width: 12,
+        marginRight: 4,
     },
     separator: {
         height: 1,
-        backgroundColor: '#DDD'
-    }
+        backgroundColor: '#DDD',
+    },
 });
 
 class Restaurant extends React.Component {
@@ -68,8 +72,10 @@ class Restaurant extends React.Component {
                     console.log(item.promotions);
                     return (
                         <View key={index}>
-                            <Text onPress={() => this.restaurantProfile(item.name, item.promotions)}
-                                  style={styles.restaurants}>{item.name}</Text>
+                            <View style={styles.restaurantWrap} >
+                                <View style={styles.dot}/>
+                                <Text style={styles.restaurants} onPress={() => this.restaurantProfile(item.name, item.promotions)}>{item.name}</Text>
+                            </View>
                             <View style={styles.separator}/>
                         </View>
                     )
