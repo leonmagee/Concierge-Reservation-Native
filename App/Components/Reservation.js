@@ -38,16 +38,16 @@ var styles = StyleSheet.create({
     }
 });
 
-class Restaurant extends React.Component {
+class Reservation extends React.Component {
 
-    restaurantProfile(name, promotions) {
-        console.log('restaurant was clicked')
-        this.props.navigator.push({
-            component: RestaurantProfile,
-            title: 'Profile',
-            passProps: {restaurantName: name, promotions: promotions}
-        })
-    }
+    // reservationProfile(name, promotions) {
+    //
+    //     this.props.navigator.push({
+    //         component: RestaurantProfile,
+    //         title: 'Profile',
+    //         passProps: {restaurantName: name, promotions: promotions}
+    //     })
+    // }
 
     constructor(props) {
         super(props);
@@ -57,32 +57,27 @@ class Restaurant extends React.Component {
             results: false
         }
 
-        api.getRestaurants().then((res) => {
+        api.getReservations().then((res) => {
 
-                var restaurants = res.map((item, index) => {
-                    //console.log(item.promotions);
-                    var length = item.categories.length;
-                    var cats = item.categories.map((item, index) => {
-                        var divider = ( index < ( length - 1 ) ) ? <Text style={styles.pipe}> | </Text> : false;
-                        return (
-                            <Text key={index} style={styles.category}>
-                                {item}{divider}
-                            </Text>
-                        )
-                    });
+                var reservations = res.map((item, index) => {
+
                     return (
                         <View key={index}>
                             <View style={defaultStyles.flexWrap} >
                                 <View style={defaultStyles.dot}/>
-                                <Text style={defaultStyles.restaurants} onPress={() => this.restaurantProfile(item.name, item.promotions)}>{item.name}</Text>
+                                <Text style={defaultStyles.restaurants}>{item.restaurant}</Text>
+                                <Text>{item.customer_name}</Text>
+                                <Text>{item.customer_email}</Text>
+                                <Text>{item.number_of_patrons}</Text>
+                                <Text>{item.reservation}</Text>
+                                <Text>{item.date_time}</Text>
                             </View>
-                            <View style={styles.categories}>{cats}</View>
                             <View style={defaultStyles.separator}/>
                         </View>
                     )
                 });
 
-                this.setState({results: restaurants})
+                this.setState({results: reservations})
                 this.setState({isLoading: false})
             }
         );
@@ -103,4 +98,4 @@ class Restaurant extends React.Component {
 
 }
 
-module.exports = Restaurant;
+module.exports = Reservation;

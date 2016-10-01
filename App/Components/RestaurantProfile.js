@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-var api = require('../Utils/api');
 import ReservationForm from './ReservationForm';
+
+var api = require('../Utils/api');
+var defaultStyles = require('./DefaultStyles');
 
 import {
     Text,
@@ -14,7 +16,7 @@ import {
 var styles = StyleSheet.create({
     container: {
         padding: 15,
-        marginTop: 60,
+        marginTop: 55,
         backgroundColor: '#FAFAFA',
         flex: 1
     },
@@ -25,31 +27,16 @@ var styles = StyleSheet.create({
         color: '#222'
     },
     subTitle: {
-        fontSize: 20,
-        padding: 9,
-        textAlign: 'center',
-        color: '#444'
+        fontSize: 18,
+        marginTop: 20,
+        marginBottom: 4,
+        fontWeight: 'bold',
+        color: '#333'
     },
     promotions: {
         color: '#222',
         fontSize: 16,
         padding: 8
-    },
-    buttonText: {
-        fontSize: 24,
-        color: '#222',
-        alignSelf: 'center'
-    },
-    button: {
-        height: 45,
-        flexDirection: 'row',
-        backgroundColor: '#08C5B1',
-        borderColor: '#08C5B1',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        justifyContent: 'center'
     },
 });
 
@@ -69,10 +56,10 @@ class RestaurantProfile extends React.Component {
     processDiscount() {
         // try calling this with fat arrow function - won't need to bind 'this'?
         console.log('lets make a reservation!');
-        var myprops = {name: 'item 1', car: 'honda'};
+        var myprops = {name: this.state.name, car: 'honda'};
         this.props.navigator.push({
             component: ReservationForm,
-            title: 'Make Reservation',
+            title: 'Coupon / Reservation',
             passProps: myprops
         })
     }
@@ -82,20 +69,30 @@ class RestaurantProfile extends React.Component {
         var restaurantPromotions = this.state.promotions.map((item, index) => {
             return (
                 <View key={index}>
-                    <Text style={styles.promotions}>{item}</Text>
+                    <View style={defaultStyles.flexWrap}>
+                        <View style={defaultStyles.dot2}/>
+                        <Text style={styles.promotions}>{item}</Text>
+                    </View>
+                    <View style={defaultStyles.separator2}/>
                 </View>
             )
         })
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>{this.state.name}</Text>
-                <Text style={styles.subTitle}>Promotions</Text>
+                <View style={defaultStyles.flexWrap}>
+                    <View style={defaultStyles.dot}/>
+                    <Text style={defaultStyles.restaurants}>{this.state.name}</Text>
+                </View>
+                <View style={defaultStyles.separator}/>
+
+                <Text style={styles.subTitle}>Discounts & Promotions</Text>
+                <View style={defaultStyles.separator2}/>
                 {restaurantPromotions}
                 <TouchableHighlight
-                    style={styles.button}
+                    style={defaultStyles.button}
                     onPress={this.processDiscount.bind(this)}
                     underlayColor="white">
-                    <Text style={styles.buttonText}>Reservation | Discount</Text>
+                    <Text style={defaultStyles.buttonText}>Coupon / Reservation</Text>
                 </TouchableHighlight>
             </View>
         )

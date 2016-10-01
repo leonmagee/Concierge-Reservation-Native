@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import Restaurant from './Restaurant';
-var api = require('../Utils/api');
+import Reservation from './Reservation';
+import Tester from './Tester';
 
-/**
- * Styles - not sure how to reuse these through out the app...
- * $color-primary: #08C5B1; // blue green
- * $color-second: #e97c5f; // red
- * $color-third: #EFD14F; // yellow
- */
+var api = require('../Utils/api');
+var defaultStyles = require('./DefaultStyles');
 
 import {
     View,
@@ -31,35 +28,25 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center'
     },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#FAFAFA',
-        alignSelf: 'center',
-    },
-    button: {
-        height: 45,
-        flexDirection: 'row',
-        backgroundColor: '#08C5B1',
-        borderColor: '#08C5B1',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        //alignSelf: 'stretch',
-        justifyContent: 'center'
-    },
     logoWrap: {
         marginBottom: 50,
         //alignItems: 'stretch'
     },
-    logo_image: {
+    logoImage: {
         // this is not responsive yet - I need to fit it to the container???
         //width: 250,
         //height: 160,
         width: 300,
         height: 192,
         //flex: 1
+    },
+    buttonWrap: {
+        backgroundColor: '#222',
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingBottom: 8,
+        borderRadius: 5,
     }
 });
 
@@ -81,20 +68,49 @@ class Main extends React.Component {
         });
     }
 
+    handleClickReservation() {
+        this.props.navigator.push({
+            title: 'Reservations',
+            component: Reservation
+        });
+    }
+
+    handleClickTesting() {
+        this.props.navigator.push({
+            title: 'Email Test',
+            component: Tester
+        })
+
+    }
+
     render() {
         return (
             <Image source={require('../Assets/img/homepage-bg-mobile.png')} style={styles.container}>
                 <View style={styles.mainContainer}>
                     <View style={styles.logoWrap}>
-                        <Image style={styles.logo_image} initWidth="250" initHeight="160"
+                        <Image style={styles.logoImage} initWidth="250" initHeight="160"
                                source={require('../Assets/img/logo.png')}></Image>
                     </View>
-                    <TouchableHighlight
-                        style={styles.button}
-                        onPress={this.handleClickRestaurant.bind(this)}
-                        underlayColor="white">
-                        <Text style={styles.buttonText}>View Restaurants</Text>
-                    </TouchableHighlight>
+                    <View style={styles.buttonWrap}>
+                        <TouchableHighlight
+                            style={defaultStyles.button}
+                            onPress={this.handleClickRestaurant.bind(this)}
+                            underlayColor="white">
+                            <Text style={defaultStyles.buttonText}>View Restaurants</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={defaultStyles.button2}
+                            onPress={this.handleClickReservation.bind(this)}
+                            underlayColor="white">
+                            <Text style={defaultStyles.buttonText}>Your Reservations</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={defaultStyles.button3}
+                            onPress={this.handleClickTesting.bind(this)}
+                            underlayColor="white">
+                            <Text style={defaultStyles.buttonText}>Email Tester</Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
             </Image>
         )
