@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import RestaurantProfile from './RestaurantProfile';
+//import RestaurantProfile from './RestaurantProfile';
 
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
-var SendMail = require('./SendMail');
 
 import {
     Text,
@@ -35,6 +34,12 @@ class Tester extends React.Component {
 
     handleEmailClick() {
         console.log( 'button has been clicked...');
+        var restaurant = 'nippon sushi';
+        var name = 'leon magee';
+        var concierge = 'dennis scotus';
+        api.sendPromotionEmail(restaurant, name, concierge ).then((res) => {
+            console.log(res);
+        });
     }
 
     render() {
@@ -48,7 +53,6 @@ class Tester extends React.Component {
                     underlayColor="white">
                     <Text style={defaultStyles.buttonText}>Send Email</Text>
                 </TouchableHighlight>
-                {SendMail}
             </View>
         )
     }

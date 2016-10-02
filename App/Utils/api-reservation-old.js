@@ -9,9 +9,14 @@ var api = {
     },
     postReservations(reservation_data) {
 
+        console.log(reservation_data);
+
+        // credentials for https://conciergereservation.com
+        // safer to use OAuth, not sure how to set up...
         var username = 'leonmagee';
         var password = 'G5waB0NrQ9LxPy7wx5ngw';
         var url = 'https://conciergereservation.com/wp-json/wp/v2/reservation';
+        //var url = `http://conciergereservation.com/wp-json/cr/reservations`;
 
         return fetch(url, {
                 method: 'POST',
@@ -41,30 +46,9 @@ var api = {
                 body: JSON.stringify(reservation_data_meta)
             }
         ).then((res) => res.json());
-    },
-
-    sendPromotionEmail(data) {
-        console.log(data);
-
-        let username = 'leonmagee';
-        let password = 'G5waB0NrQ9LxPy7wx5ngw';
-        let url = 'https://www.conciergereservation.com/wp-json/cr/email';
-
-        return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }
-        ).then((res) => res.json())
-            .catch((err) => {
-                console.log('error: ', err);
-            });
-
     }
 }
+
 
 
 module.exports = api;

@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import SuccessMessage from './SuccessMessage';
-import homeRoute from './Main'; // should be a better way to route back home
 
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
@@ -14,14 +12,12 @@ import {
     TouchableHighlight,
     ActivityIndicator,
     Switch,
+    DatePickerIOS
 } from 'react-native';
 
 var styles = StyleSheet.create({
     container: {
-        paddingTop: 70,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
+        padding: 15,
         backgroundColor: '#FAFAFA',
         flex: 1
     },
@@ -46,31 +42,30 @@ class ReservationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             error: false,
             name: '',
             email: '',
-            concierge: 'Harry Maxwell', // pass down concierge ID from initial login...
             restaurant: props.name,
+            patrons: '',
+            is_reservation: false,
+            time: false,
+            date: new Date(),
+            //timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
         }
-    }
-
-    _handleNavigationRequest() {
-        this.props.navigator.push({
-            component: homeRoute,
-            title: 'Concierge Reservation',
-        });
     }
 
     submitForm() {
 
-        this.setState({
-            isLoading: true,
-        })
-
         var reservation_data = {
-            title: 'Referral for ' + this.state.name + ' at ' + this.state.restaurant,
+            title: 'Reservation for ' + this.state.restaurant + ' by ' + this.state.name,
             status: 'publish',
+        }
+
+        if ( ! this.state.is_reservation ) {
+            this.setState({
+                date: '',
+            })
         }
 
         var reservation_data_meta = {
@@ -78,49 +73,66 @@ class ReservationForm extends React.Component {
                 customer_name: this.state.name,
                 customer_email: this.state.email,
                 restaurant: this.state.restaurant,
-                concierge: this.state.concierge,
+                number_of_patrons: this.state.patrons,
+                reservation: this.state.is_reservation,
+                date_time: this.state.date,
             }
         }
 
-        var email_data = {
-            restaurant: this.state.restaurant,
-            name: this.state.name,
-            concierge: this.state.concierge,
-            email: this.state.email,
-        }
-
         api.postReservations(reservation_data).then((res) => {
+            //console.log('res result x: ', res);
+            //console.log('ID: ', res.id);
             api.postReservationsMeta(res.id, reservation_data_meta).then((res) => {
-                console.log('meta data added', res);
-                /**
-                 * @todo error handling here
-                 */
-                api.sendPromotionEmail(email_data).then((res) => {
-                    console.log(res);
-
-                    this.props.navigator.push({
-                        title: 'Success',
-                        component: SuccessMessage,
-                        passProps: {
-                            name: this.state.name,
-                            restaurant: this.state.restaurant,
-                        },
-                        leftButtonTitle: 'Home',
-                        onLeftButtonPress: () => this._handleNavigationRequest(),
-                        // LeftButton(route, navigator, index, navState) {
-                        //     // some component or null
-                        // }
-                    })
-
-                })
+                //console.log(res);
+                // do something with response here
+                // error handling?
+                // redirect to new route
             })
         })
     }
 
+    toggleSwitch() {
+
+        this.state.is_reservation ?
+            this.setState({is_reservation: false}) :
+            this.setState({is_reservation: true});
+    }
+
+    updateDate(date) {
+        console.log(date);
+        this.setState(date);
+    }
+
     render() {
+        /**
+         * I could probably wrap all of the conditional elements in one View block?
+         */
+        var patronsLabel = this.state.is_reservation ?
+            <Text style={styles.label}>Number of Patrons</Text> : false;
+
+        var patronsInput = this.state.is_reservation ?
+            <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                keyboardType="numeric"
+                onChangeText={(patrons) => this.setState({patrons})}
+            /> : false;
+
+        var dateLabel = this.state.is_reservation ?
+            <Text style={styles.label}>Date</Text> : false;
+
+        var dateInput = this.state.is_reservation ?
+            <DatePickerIOS
+                date={this.state.date}
+                mode="datetime"
+                onDateChange={(date) => {
+                console.log(date);
+                this.setState({date});
+            }}
+            /> : false;
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <Text style={styles.label}>Restaurant</Text>
                 <TextInput
                     style={styles.input}
@@ -141,17 +153,23 @@ class ReservationForm extends React.Component {
                     onChangeText={(email) => this.setState({email})}
                     autoCorrect={false}
                 />
+                <Text style={styles.label}>Make Reservation?</Text>
+                <Switch
+                    onValueChange={() => this.toggleSwitch()}
+                    style={{marginBottom: 10}}
+                    onTintColor="#08C5B1"
+                    value={this.state.is_reservation}/>
+                {dateLabel}
+                {dateInput}
+                {patronsLabel}
+                {patronsInput}
                 <TouchableHighlight
                     style={defaultStyles.button}
                     onPress={this.submitForm.bind(this, this.state.data)}
                     underlayColor="white">
                     <Text style={defaultStyles.buttonText}>Submit</Text>
                 </TouchableHighlight>
-                <ActivityIndicator
-                    animating={this.state.isLoading}
-                    color="#111"
-                    size="large"></ActivityIndicator>
-            </View>
+            </ScrollView>
         )
     }
 }

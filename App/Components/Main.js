@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Restaurant from './Restaurant';
 import Reservation from './Reservation';
 import Tester from './Tester';
+import SuccessMessage from './SuccessMessage';
+import Playground from './Playground';
 
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
@@ -57,33 +59,55 @@ class Main extends React.Component {
         this.state = {
             username: '',
             isLoading: false,
-            error: false
+            error: false,
         }
     }
 
     handleClickRestaurant() {
         this.props.navigator.push({
             title: 'Restaurants',
-            component: Restaurant
+            component: Restaurant,
         });
     }
 
     handleClickReservation() {
         this.props.navigator.push({
             title: 'Reservations',
-            component: Reservation
+            component: Reservation,
         });
     }
 
+    // _handleNavigationRequest() {
+    //     this.props.navigator.push({
+    //         component: Playground,
+    //         title: 'Genius',
+    //         passProps: { myProp: 'genius' },
+    //     });
+    // }
+
     handleClickTesting() {
         this.props.navigator.push({
-            title: 'Email Test',
-            component: Tester
+            title: 'Success',
+            component: SuccessMessage,
+            passProps: {
+                name: 'test name',
+                restaurant: 'test restaurant',
+            },
+            // leftButtonTitle: 'Home',
+            // onLeftButtonPress: () => this._handleNavigationRequest(),
         })
+    }
 
+    handleClickAnimations() {
+        this.props.navigator.push({
+            title: 'Animations',
+            component: Playground,
+        })
     }
 
     render() {
+        console.log('navigator: ', this.props.navigator );
+
         return (
             <Image source={require('../Assets/img/homepage-bg-mobile.png')} style={styles.container}>
                 <View style={styles.mainContainer}>
@@ -108,7 +132,13 @@ class Main extends React.Component {
                             style={defaultStyles.button3}
                             onPress={this.handleClickTesting.bind(this)}
                             underlayColor="white">
-                            <Text style={defaultStyles.buttonText}>Email Tester</Text>
+                            <Text style={defaultStyles.buttonText}>Misc Tester</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={defaultStyles.button}
+                            onPress={this.handleClickAnimations.bind(this)}
+                            underlayColor="white">
+                            <Text style={defaultStyles.buttonText}>Animations</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
