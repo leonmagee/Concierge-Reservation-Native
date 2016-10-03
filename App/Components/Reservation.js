@@ -7,6 +7,7 @@ var defaultStyles = require('./DefaultStyles');
 import {
     Text,
     View,
+    ScrollView,
     StyleSheet,
     Image,
     TouchableHighlight,
@@ -35,19 +36,13 @@ var styles = StyleSheet.create({
     },
     pipe: {
         color: '#CCC',
+    },
+    flexWrap: {
+
     }
 });
 
 class Reservation extends React.Component {
-
-    // reservationProfile(name, promotions) {
-    //
-    //     this.props.navigator.push({
-    //         component: RestaurantProfile,
-    //         title: 'Profile',
-    //         passProps: {restaurantName: name, promotions: promotions}
-    //     })
-    // }
 
     constructor(props) {
         super(props);
@@ -63,14 +58,13 @@ class Reservation extends React.Component {
 
                     return (
                         <View key={index}>
-                            <View style={defaultStyles.flexWrap} >
+                            <View style={styles.flexWrap} >
                                 <View style={defaultStyles.dot}/>
                                 <Text style={defaultStyles.restaurants}>{item.restaurant}</Text>
                                 <Text>{item.customer_name}</Text>
                                 <Text>{item.customer_email}</Text>
-                                <Text>{item.number_of_patrons}</Text>
-                                <Text>{item.reservation}</Text>
-                                <Text>{item.date_time}</Text>
+                                <Text>{item.concierge}</Text>
+                                <Text>{item.concierge_id}</Text>
                             </View>
                             <View style={defaultStyles.separator}/>
                         </View>
@@ -86,13 +80,13 @@ class Reservation extends React.Component {
     render() {
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 {this.state.results}
                 <ActivityIndicator
                     animating={this.state.isLoading}
                     color="#111"
                     size="large"></ActivityIndicator>
-            </View>
+            </ScrollView>
         )
     }
 

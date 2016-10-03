@@ -1,5 +1,9 @@
 var api = {
-    getReservations() { // need to sort by concierge ID...
+    getReservations() {
+        /**
+         * Should I get all data, or create endpoints specific for concierge ids
+         * and restaurants???
+         */
         var url = `https://conciergereservation.com/wp-json/cr/reservations`;
         return fetch(url).then((res) => res.json());
     },

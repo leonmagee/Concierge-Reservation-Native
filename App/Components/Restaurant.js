@@ -7,6 +7,7 @@ var defaultStyles = require('./DefaultStyles');
 import {
     Text,
     View,
+    ScrollView,
     StyleSheet,
     Image,
     TouchableHighlight,
@@ -15,11 +16,10 @@ import {
 
 var styles = StyleSheet.create({
     container: {
-        paddingTop: 80,
+        //paddingTop: 80,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#FAFAFA',
-        flex: 1
+        alignSelf: 'stretch',
     },
     buttonText: {
         fontSize: 24,
@@ -35,6 +35,13 @@ var styles = StyleSheet.create({
     },
     pipe: {
         color: '#CCC',
+    },
+    outerWrap: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#FAFAFA',
+        justifyContent: 'center',
+        paddingTop: 75,
     }
 });
 
@@ -72,9 +79,10 @@ class Restaurant extends React.Component {
                     });
                     return (
                         <View key={index}>
-                            <View style={defaultStyles.flexWrap} >
+                            <View style={defaultStyles.flexWrap}>
                                 <View style={defaultStyles.dot}/>
-                                <Text style={defaultStyles.restaurants} onPress={() => this.restaurantProfile(item.name, item.promotions)}>{item.name}</Text>
+                                <Text style={defaultStyles.restaurants}
+                                      onPress={() => this.restaurantProfile(item.name, item.promotions)}>{item.name}</Text>
                             </View>
                             <View style={styles.categories}>{cats}</View>
                             <View style={defaultStyles.separator}/>
@@ -82,7 +90,13 @@ class Restaurant extends React.Component {
                     )
                 });
 
-                this.setState({results: restaurants})
+                var restaurant_wrap =
+                        <ScrollView style={styles.container}>
+                            {restaurants}
+                        </ScrollView>;
+
+
+                this.setState({results: restaurant_wrap})
                 this.setState({isLoading: false})
             }
         );
@@ -91,7 +105,7 @@ class Restaurant extends React.Component {
     render() {
 
         return (
-            <View style={styles.container}>
+            <View style={styles.outerWrap}>
                 {this.state.results}
                 <ActivityIndicator
                     animating={this.state.isLoading}
