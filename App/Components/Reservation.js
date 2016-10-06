@@ -15,13 +15,6 @@ import {
 } from 'react-native';
 
 var styles = StyleSheet.create({
-    container: {
-        paddingTop: 80,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#FAFAFA',
-        flex: 1
-    },
     buttonText: {
         fontSize: 24,
         color: 'white',
@@ -37,8 +30,8 @@ var styles = StyleSheet.create({
     pipe: {
         color: '#CCC',
     },
-    flexWrap: {
-
+    resDetail: {
+        marginBottom: 8,
     }
 });
 
@@ -49,29 +42,40 @@ class Reservation extends React.Component {
         this.state = {
             isLoading: true,
             error: false,
-            results: false
+            results: false,
+            conciergeID: props.conciergeID,
         }
 
         api.getReservations().then((res) => {
 
                 var reservations = res.map((item, index) => {
 
-                    return (
-                        <View key={index}>
-                            <View style={styles.flexWrap} >
-                                <View style={defaultStyles.dot}/>
-                                <Text style={defaultStyles.restaurants}>{item.restaurant}</Text>
-                                <Text>{item.customer_name}</Text>
-                                <Text>{item.customer_email}</Text>
-                                <Text>{item.concierge}</Text>
-                                <Text>{item.concierge_id}</Text>
+                    if (this.state.conciergeID === item.concierge_id) {
+
+                        return (
+                            <View key={index}>
+                                <View style={defaultStyles.flexWrap}>
+                                    <View style={defaultStyles.dot}/>
+                                    <Text style={defaultStyles.restaurants}>{item.restaurant}</Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.resDetail}>Customer: {item.customer_name}</Text>
+                                    <Text style={styles.resDetail}>Email: {item.customer_email}</Text>
+                                </View>
+                                <View style={defaultStyles.separator}/>
                             </View>
-                            <View style={defaultStyles.separator}/>
-                        </View>
-                    )
+                        )
+                    }
+
+
                 });
 
-                this.setState({results: reservations})
+                let reservation_wrap =
+                    <ScrollView style={defaultStyles.container}>
+                        {reservations}
+                    </ScrollView>;
+
+                this.setState({results: reservation_wrap})
                 this.setState({isLoading: false})
             }
         );
@@ -80,13 +84,13 @@ class Reservation extends React.Component {
     render() {
 
         return (
-            <ScrollView style={styles.container}>
+            <View style={defaultStyles.outerWrap}>
                 {this.state.results}
                 <ActivityIndicator
                     animating={this.state.isLoading}
                     color="#111"
                     size="large"></ActivityIndicator>
-            </ScrollView>
+            </View>
         )
     }
 

@@ -1,3 +1,6 @@
+/**
+ * @todo refactor this - separate into smaller components
+ */
 import React, {Component} from 'react';
 import Restaurant from './Restaurant';
 import Reservation from './Reservation';
@@ -13,7 +16,9 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableHighlight
+    TouchableHighlight,
+    TextInput,
+    ActivityIndicator
 } from 'react-native';
 
 
@@ -49,6 +54,23 @@ var styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 8,
         borderRadius: 5,
+    },
+    logOut: {
+        color: '#FAFAFA',
+        backgroundColor: 'transparent',
+        textAlign: 'center',
+        marginTop: 15,
+        fontWeight: 'bold',
+    },
+    errorMessage: {
+        padding: 8,
+        backgroundColor: '#E97C5F',
+        color: '#FFF',
+        textAlign: 'center',
+        //alignSelf: 'center',
+        marginTop: 8,
+        borderRadius: 5,
+        fontWeight: 'bold',
     }
 });
 
@@ -60,6 +82,13 @@ class Main extends React.Component {
             username: '',
             isLoading: false,
             error: false,
+            mode: false, // this will toggle btw 'concierge' and 'restaurant' - determined by login?
+            //conciergeID: 'aaaaa', // toggle for dev - secret id now
+            conciergeID: false,
+            restaurantID: false,
+            loggedIn: false, // toggle for dev
+            wrongLogin: false,
+            //loggedIn: true,
         }
     }
 
@@ -74,27 +103,27 @@ class Main extends React.Component {
         this.props.navigator.push({
             title: 'Reservations',
             component: Reservation,
+            passProps: {
+                conciergeID: this.state.conciergeID,
+            }
         });
     }
-
-    // _handleNavigationRequest() {
-    //     this.props.navigator.push({
-    //         component: Playground,
-    //         title: 'Genius',
-    //         passProps: { myProp: 'genius' },
-    //     });
-    // }
 
     handleClickTesting() {
         this.props.navigator.push({
             title: 'Success',
             component: SuccessMessage,
+            //leftButtonIcon: require('image!back'),
+            //leftButtonIcon: '', // add custom image?
+            leftButtonTitle: 'Home',
+            onLeftButtonPress: () => {
+                this.props.navigator.popToTop();
+                //this.getInChat = false;
+            },
             passProps: {
                 name: 'test name',
                 restaurant: 'test restaurant',
             },
-            // leftButtonTitle: 'Home',
-            // onLeftButtonPress: () => this._handleNavigationRequest(),
         })
     }
 
@@ -105,8 +134,108 @@ class Main extends React.Component {
         })
     }
 
+    logOut() {
+        this.setState({
+            loggedIn: false
+        })
+    }
+
+    logIn() {
+        /**
+         * Post to rest api to get authenticated response
+         */
+        this.setState({
+            isLoading: true,
+            wrongLogin: false,
+        })
+
+        console.log('input val', this.state.conciergeID);
+        api.postUsers().then((res) => {
+            for (var item of res) {
+                if (this.state.conciergeID === item.login_id) {
+                    this.setState({
+                        loggedIn: true,
+                        conciergeID: item.secret_id,
+                        mode: item.mode,
+                    })
+                    console.log(this.state);
+                    break;
+                }
+                this.setState({
+                    wrongLogin: true,
+                })
+            }
+
+            this.setState({
+                isLoading: false,
+            })
+        })
+    }
+
     render() {
-        console.log('navigator: ', this.props.navigator );
+        let loginButton = !this.state.isLoading ?
+            <Text style={defaultStyles.buttonText}>Log In</Text> :
+            <ActivityIndicator
+                animating={this.state.isLoading}
+                color="#FFF"
+                size="small"></ActivityIndicator>;
+
+        let errorMessage = this.state.wrongLogin ?
+            <View><Text style={styles.errorMessage}>INCORRECT USER ID</Text></View> :
+            <View></View>;
+
+        let mainContent = !this.state.loggedIn ?
+            <View>
+                <TextInput
+                    style={defaultStyles.input}
+                    placeholder='Your Concierge or Restaurant ID'
+                    placeholderTextColor="#999"
+                    autoCapitalize="none"
+                    onChangeText={(conciergeID) => this.setState({conciergeID})}
+                    autoCorrect={false}
+                />
+                {errorMessage}
+                <TouchableHighlight
+                    style={defaultStyles.button}
+                    onPress={this.logIn.bind(this)}
+                    underlayColor="white">
+                    <View>
+                        {loginButton}
+                    </View>
+                </TouchableHighlight>
+            </View> :
+            <View>
+                <View style={styles.buttonWrap}>
+                    <TouchableHighlight
+                        style={defaultStyles.button}
+                        onPress={this.handleClickRestaurant.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>View Restaurants</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={defaultStyles.button2}
+                        onPress={this.handleClickReservation.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>Your Reservations</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={defaultStyles.button3}
+                        onPress={this.handleClickTesting.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>Misc Tester</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={defaultStyles.button}
+                        onPress={this.handleClickAnimations.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>Animations</Text>
+                    </TouchableHighlight>
+                </View>
+                <View>
+                    <Text style={styles.logOut} onPress={this.logOut.bind(this)}>Log Out</Text>
+                </View>
+            </View>;
+
 
         return (
             <Image source={require('../Assets/img/homepage-bg-mobile.png')} style={styles.container}>
@@ -115,32 +244,7 @@ class Main extends React.Component {
                         <Image style={styles.logoImage} initWidth="250" initHeight="160"
                                source={require('../Assets/img/logo.png')}></Image>
                     </View>
-                    <View style={styles.buttonWrap}>
-                        <TouchableHighlight
-                            style={defaultStyles.button}
-                            onPress={this.handleClickRestaurant.bind(this)}
-                            underlayColor="white">
-                            <Text style={defaultStyles.buttonText}>View Restaurants</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={defaultStyles.button2}
-                            onPress={this.handleClickReservation.bind(this)}
-                            underlayColor="white">
-                            <Text style={defaultStyles.buttonText}>Your Reservations</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={defaultStyles.button3}
-                            onPress={this.handleClickTesting.bind(this)}
-                            underlayColor="white">
-                            <Text style={defaultStyles.buttonText}>Misc Tester</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={defaultStyles.button}
-                            onPress={this.handleClickAnimations.bind(this)}
-                            underlayColor="white">
-                            <Text style={defaultStyles.buttonText}>Animations</Text>
-                        </TouchableHighlight>
-                    </View>
+                    {mainContent}
                 </View>
             </Image>
         )

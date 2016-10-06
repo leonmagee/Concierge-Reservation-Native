@@ -11,7 +11,10 @@ import {
     StyleSheet,
 } from 'react-native';
 
-
+/**
+ * @todo organize these styles better
+ * @todo make this more dry
+ */
 var defaultStyles = StyleSheet.create({
     buttonText: {
         fontSize: 18,
@@ -21,7 +24,7 @@ var defaultStyles = StyleSheet.create({
     },
     button: {
         height: 45,
-        flexDirection: 'row',
+        //flexDirection: 'row',
         backgroundColor: '#08C5B1',
         borderColor: '#08C5B1',
         borderWidth: 1,
@@ -32,7 +35,7 @@ var defaultStyles = StyleSheet.create({
     },
     button2: {
         height: 45,
-        flexDirection: 'row',
+        //flexDirection: 'row',
         backgroundColor: '#E97C5F',
         borderColor: '#E97C5F',
         borderWidth: 1,
@@ -43,7 +46,7 @@ var defaultStyles = StyleSheet.create({
     },
     button3: {
         height: 45,
-        flexDirection: 'row',
+        //flexDirection: 'row',
         backgroundColor: '#EFD14F',
         borderColor: '#EFD14F',
         borderWidth: 1,
@@ -53,7 +56,6 @@ var defaultStyles = StyleSheet.create({
         justifyContent: 'center'
     },
     flexWrap: {
-        //flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -84,6 +86,33 @@ var defaultStyles = StyleSheet.create({
     separator2: {
         height: 0.5,
         backgroundColor: '#DEDEDE',
+    },
+    outerWrap: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#FAFAFA',
+        justifyContent: 'center',
+        paddingTop: 75,
+    },
+    container: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        alignSelf: 'stretch',
+    },
+    input: {
+        height: 40,
+        borderColor: '#DDD',
+        borderWidth: 1,
+        backgroundColor: '#F7F7F7',
+        borderRadius: 5,
+        paddingLeft: 10,
+    },
+    label: {
+        fontWeight: 'bold',
+        color: '#111',
+        marginTop: 5,
+        marginBottom: 4,
+        //backgroundColor: 'transparent'
     },
 });
 

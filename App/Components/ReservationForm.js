@@ -25,20 +25,6 @@ var styles = StyleSheet.create({
         backgroundColor: '#FAFAFA',
         flex: 1
     },
-    input: {
-        height: 40,
-        borderColor: '#DDD',
-        borderWidth: 1,
-        backgroundColor: '#F7F7F7',
-        borderRadius: 5,
-        paddingLeft: 10,
-    },
-    label: {
-        fontWeight: 'bold',
-        color: '#111',
-        marginTop: 5,
-        marginBottom: 4,
-    }
 });
 
 class ReservationForm extends React.Component {
@@ -53,13 +39,6 @@ class ReservationForm extends React.Component {
             concierge: 'Harry Maxwell', // pass down concierge ID from initial login...
             restaurant: props.name,
         }
-    }
-
-    _handleNavigationRequest() {
-        this.props.navigator.push({
-            component: homeRoute,
-            title: 'Concierge Reservation',
-        });
     }
 
     submitForm() {
@@ -105,11 +84,12 @@ class ReservationForm extends React.Component {
                             name: this.state.name,
                             restaurant: this.state.restaurant,
                         },
+                        //leftButtonIcon: ???,
                         leftButtonTitle: 'Home',
-                        onLeftButtonPress: () => this._handleNavigationRequest(),
-                        // LeftButton(route, navigator, index, navState) {
-                        //     // some component or null
-                        // }
+                        onLeftButtonPress: () => {
+                            this.props.navigator.popToTop();
+                            //this.getInChat = false;
+                        },
                     })
 
                 })
@@ -121,22 +101,22 @@ class ReservationForm extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Text style={styles.label}>Restaurant</Text>
+                <Text style={defaultStyles.label}>Restaurant</Text>
                 <TextInput
-                    style={styles.input}
+                    style={defaultStyles.input}
                     placeholder={this.state.restaurant}
                     placeholderTextColor="#888"
                     editable={false}
                 />
-                <Text style={styles.label}>Customer Name</Text>
+                <Text style={defaultStyles.label}>Customer Name</Text>
                 <TextInput
-                    style={styles.input}
+                    style={defaultStyles.input}
                     onChangeText={(name) => this.setState({name})}
                     autoCorrect={false}
                 />
-                <Text style={styles.label}>Customer Email</Text>
+                <Text style={defaultStyles.label}>Customer Email</Text>
                 <TextInput
-                    style={styles.input}
+                    style={defaultStyles.input}
                     autoCapitalize="none"
                     onChangeText={(email) => this.setState({email})}
                     autoCorrect={false}
