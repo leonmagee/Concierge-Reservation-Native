@@ -1,10 +1,10 @@
 /**
- * @todo refactor this - separate into smaller components
+ * Import React Components
  */
 import React, {Component} from 'react';
+import Login from './Home/LogIn';
 import Restaurant from './Restaurant';
 import Reservation from './Reservation';
-
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
 
@@ -18,7 +18,9 @@ import {
     ActivityIndicator
 } from 'react-native';
 
-
+/**
+ * Unique Styles
+ */
 var styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -35,7 +37,7 @@ var styles = StyleSheet.create({
     logoWrap: {
         marginBottom: 50,
     },
-    logoImage: {
+    logoImage: { // before and after login - keep the same?
         width: 300,
         height: 192,
     },
@@ -70,12 +72,12 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '',
             isLoading: false,
             error: false,
-            mode: false, // this will toggle btw 'concierge' and 'restaurant' - determined by login?
+            mode: false, // toggle btw 'concierge' and 'restaurant'
             //conciergeID: 'aaaaa', // toggle for dev - secret id now
             conciergeID: false,
-            conciergeName: false,
             restaurantID: false,
             loggedIn: false, // toggle for dev
             wrongLogin: false,
@@ -87,10 +89,6 @@ class Main extends React.Component {
         this.props.navigator.push({
             title: 'Restaurants',
             component: Restaurant,
-            passProps: {
-                conciergeID: this.state.conciergeID,
-                conciergeName: this.state.conciergeName,
-            }
         });
     }
 
@@ -127,8 +125,8 @@ class Main extends React.Component {
                         loggedIn: true,
                         conciergeID: item.secret_id,
                         mode: item.mode,
-                        conciergeName: item.name,
                     })
+                    console.log(this.state);
                     break;
                 }
                 this.setState({
@@ -139,7 +137,6 @@ class Main extends React.Component {
             this.setState({
                 isLoading: false,
             })
-
         })
     }
 
@@ -156,25 +153,14 @@ class Main extends React.Component {
             <View></View>;
 
         let mainContent = !this.state.loggedIn ?
-            <View>
-                <TextInput
-                    style={defaultStyles.input}
-                    placeholder='Your Concierge or Restaurant ID'
-                    placeholderTextColor="#999"
-                    autoCapitalize="none"
-                    onChangeText={(conciergeID) => this.setState({conciergeID})}
-                    autoCorrect={false}
-                />
-                {errorMessage}
-                <TouchableHighlight
-                    style={defaultStyles.button}
-                    onPress={() => this.logIn()}
-                    underlayColor="white">
-                    <View>
-                        {loginButton}
-                    </View>
-                </TouchableHighlight>
-            </View> :
+
+            <Login
+                conciergeID={this.state.conciergeID}
+                logInClick={this.logIn.bind(this)}
+                wrongLogin={this.state.wrongLogin}
+            />
+
+            :
             <View>
                 <View style={styles.buttonWrap}>
                     <TouchableHighlight

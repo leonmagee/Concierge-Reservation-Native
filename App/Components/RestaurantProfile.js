@@ -55,12 +55,14 @@ class RestaurantProfile extends React.Component {
 
     processDiscount() {
         // try calling this with fat arrow function - won't need to bind 'this'?
-        console.log('lets make a reservation!');
-        var myprops = {name: this.state.name, car: 'honda'};
         this.props.navigator.push({
             component: ReservationForm,
             title: 'Coupon / Reservation',
-            passProps: myprops
+            passProps: {
+                name: this.state.name,
+                conciergeID: this.props.conciergeID,
+                conciergeName: this.props.conciergeName,
+            }
         })
     }
 

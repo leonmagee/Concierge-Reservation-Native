@@ -4,6 +4,9 @@
 import React, {Component} from 'react';
 import Restaurant from './Restaurant';
 import Reservation from './Reservation';
+import Tester from './Tester';
+import SuccessMessage from './SuccessMessage';
+import Playground from './Playground';
 
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
@@ -34,10 +37,15 @@ var styles = StyleSheet.create({
     },
     logoWrap: {
         marginBottom: 50,
+        //alignItems: 'stretch'
     },
     logoImage: {
+        // this is not responsive yet - I need to fit it to the container???
+        //width: 250,
+        //height: 160,
         width: 300,
         height: 192,
+        //flex: 1
     },
     buttonWrap: {
         backgroundColor: '#222',
@@ -59,6 +67,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#E97C5F',
         color: '#FFF',
         textAlign: 'center',
+        //alignSelf: 'center',
         marginTop: 8,
         borderRadius: 5,
         fontWeight: 'bold',
@@ -70,12 +79,12 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '',
             isLoading: false,
             error: false,
             mode: false, // this will toggle btw 'concierge' and 'restaurant' - determined by login?
             //conciergeID: 'aaaaa', // toggle for dev - secret id now
             conciergeID: false,
-            conciergeName: false,
             restaurantID: false,
             loggedIn: false, // toggle for dev
             wrongLogin: false,
@@ -87,10 +96,6 @@ class Main extends React.Component {
         this.props.navigator.push({
             title: 'Restaurants',
             component: Restaurant,
-            passProps: {
-                conciergeID: this.state.conciergeID,
-                conciergeName: this.state.conciergeName,
-            }
         });
     }
 
@@ -104,10 +109,34 @@ class Main extends React.Component {
         });
     }
 
+    handleClickTesting() {
+        this.props.navigator.push({
+            title: 'Success',
+            component: SuccessMessage,
+            //leftButtonIcon: require('image!back'),
+            //leftButtonIcon: '', // add custom image?
+            leftButtonTitle: 'Home',
+            onLeftButtonPress: () => {
+                this.props.navigator.popToTop();
+                //this.getInChat = false;
+            },
+            passProps: {
+                name: 'test name',
+                restaurant: 'test restaurant',
+            },
+        })
+    }
+
+    handleClickAnimations() {
+        this.props.navigator.push({
+            title: 'Animations',
+            component: Playground,
+        })
+    }
+
     logOut() {
         this.setState({
-            loggedIn: false,
-            wrongLogin: false,
+            loggedIn: false
         })
     }
 
@@ -120,6 +149,7 @@ class Main extends React.Component {
             wrongLogin: false,
         })
 
+        console.log('input val', this.state.conciergeID);
         api.postUsers().then((res) => {
             for (var item of res) {
                 if (this.state.conciergeID === item.login_id) {
@@ -127,8 +157,8 @@ class Main extends React.Component {
                         loggedIn: true,
                         conciergeID: item.secret_id,
                         mode: item.mode,
-                        conciergeName: item.name,
                     })
+                    console.log(this.state);
                     break;
                 }
                 this.setState({
@@ -139,7 +169,6 @@ class Main extends React.Component {
             this.setState({
                 isLoading: false,
             })
-
         })
     }
 
@@ -168,7 +197,7 @@ class Main extends React.Component {
                 {errorMessage}
                 <TouchableHighlight
                     style={defaultStyles.button}
-                    onPress={() => this.logIn()}
+                    onPress={this.logIn.bind(this)}
                     underlayColor="white">
                     <View>
                         {loginButton}
@@ -188,6 +217,18 @@ class Main extends React.Component {
                         onPress={this.handleClickReservation.bind(this)}
                         underlayColor="white">
                         <Text style={defaultStyles.buttonText}>Your Reservations</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={defaultStyles.button3}
+                        onPress={this.handleClickTesting.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>Misc Tester</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={defaultStyles.button}
+                        onPress={this.handleClickAnimations.bind(this)}
+                        underlayColor="white">
+                        <Text style={defaultStyles.buttonText}>Animations</Text>
                     </TouchableHighlight>
                 </View>
                 <View>

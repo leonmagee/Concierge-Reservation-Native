@@ -36,7 +36,8 @@ class ReservationForm extends React.Component {
             error: false,
             name: '',
             email: '',
-            concierge: 'Harry Maxwell', // pass down concierge ID from initial login...
+            conciergeID: props.conciergeID,
+            conciergeName: props.conciergeName, // pass down concierge ID from initial login...
             restaurant: props.name,
         }
     }
@@ -57,25 +58,24 @@ class ReservationForm extends React.Component {
                 customer_name: this.state.name,
                 customer_email: this.state.email,
                 restaurant: this.state.restaurant,
-                concierge: this.state.concierge,
+                concierge: this.state.conciergeName,
+                concierge_id: this.state.conciergeID,
             }
         }
 
         var email_data = {
             restaurant: this.state.restaurant,
             name: this.state.name,
-            concierge: this.state.concierge,
+            concierge: this.state.conciergeName,
             email: this.state.email,
         }
 
         api.postReservations(reservation_data).then((res) => {
             api.postReservationsMeta(res.id, reservation_data_meta).then((res) => {
-                console.log('meta data added', res);
                 /**
                  * @todo error handling here
                  */
                 api.sendPromotionEmail(email_data).then((res) => {
-                    console.log(res);
 
                     this.props.navigator.push({
                         title: 'Success',

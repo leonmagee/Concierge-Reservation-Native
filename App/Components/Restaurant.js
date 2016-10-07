@@ -35,11 +35,15 @@ var styles = StyleSheet.create({
 class Restaurant extends React.Component {
 
     restaurantProfile(name, promotions) {
-        console.log('restaurant was clicked')
         this.props.navigator.push({
             component: RestaurantProfile,
             title: 'Profile',
-            passProps: {restaurantName: name, promotions: promotions}
+            passProps: {
+                restaurantName: name,
+                promotions: promotions,
+                conciergeName: this.props.conciergeName,
+                conciergeID: this.props.conciergeID
+            }
         })
     }
 
@@ -48,13 +52,12 @@ class Restaurant extends React.Component {
         this.state = {
             isLoading: true,
             error: false,
-            results: false
+            results: false,
         }
 
         api.getRestaurants().then((res) => {
 
                 var restaurants = res.map((item, index) => {
-                    //console.log(item.promotions);
                     var length = item.categories.length;
                     var cats = item.categories.map((item, index) => {
                         var divider = ( index < ( length - 1 ) ) ? <Text style={styles.pipe}> | </Text> : false;
@@ -78,9 +81,9 @@ class Restaurant extends React.Component {
                 });
 
                 let restaurant_wrap =
-                        <ScrollView style={defaultStyles.container}>
-                            {restaurants}
-                        </ScrollView>;
+                    <ScrollView style={defaultStyles.container}>
+                        {restaurants}
+                    </ScrollView>;
 
                 this.setState({results: restaurant_wrap})
                 this.setState({isLoading: false})

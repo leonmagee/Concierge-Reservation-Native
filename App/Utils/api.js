@@ -54,8 +54,6 @@ var api = {
         var password = 'G5waB0NrQ9LxPy7wx5ngw';
         var url = `https://conciergereservation.com/wp-json/acf/v2/post/${id}`;
 
-        console.log('url: ', url);
-
         return fetch(url, {
                 method: 'POST',
                 headers: {
@@ -68,7 +66,6 @@ var api = {
     },
 
     sendPromotionEmail(data) {
-        console.log(data);
 
         let username = 'leonmagee';
         let password = 'G5waB0NrQ9LxPy7wx5ngw';
