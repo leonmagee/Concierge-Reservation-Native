@@ -4,12 +4,13 @@ import Main from './App/Components/Main'
 import {
     AppRegistry,
     StyleSheet,
-    Text,
-    View,
     NavigatorIOS
 } from 'react-native';
 
 const styles = StyleSheet.create({
+    /**
+     * This is the container of everything, not just the nav
+     */
     container: {
         flex: 1,
         backgroundColor: '#111111'
@@ -24,11 +25,13 @@ class ConciergeReservation extends Component {
                 style={styles.container}
                 initialRoute={{
                     component: Main,
-                    title: 'Concierge Reservation',
-                    passProps: {myProp: 'foo' }
-            }}/>
+                    title: 'Home',
+                }}
+                navigationBarHidden={true}
+            />
         )
     }
 }
 
 AppRegistry.registerComponent('ConciergeReservation', () => ConciergeReservation);
+

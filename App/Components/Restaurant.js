@@ -34,16 +34,36 @@ var styles = StyleSheet.create({
 
 class Restaurant extends React.Component {
 
-    restaurantProfile(name, promotions) {
+    restaurantProfile(name,
+                      promotions,
+                      address,
+                      city,
+                      state,
+                      zip,
+                      hours,
+                      map_url,
+                      website_url,
+                      menu_url,
+                      google_map_url) {
         this.props.navigator.push({
             component: RestaurantProfile,
             title: 'Profile',
             passProps: {
                 restaurantName: name,
                 promotions: promotions,
+                address: address,
+                city: city,
+                state: state,
+                zip: zip,
+                hours: hours,
                 conciergeName: this.props.conciergeName,
-                conciergeID: this.props.conciergeID
-            }
+                conciergeID: this.props.conciergeID,
+                mapURL: map_url,
+                websiteURL: website_url,
+                menuURL: menu_url,
+                googleMapURL: google_map_url,
+            },
+            navigationBarHidden: false
         })
     }
 
@@ -67,12 +87,25 @@ class Restaurant extends React.Component {
                             </Text>
                         )
                     });
+
                     return (
                         <View key={index}>
                             <View style={defaultStyles.flexWrap}>
                                 <View style={defaultStyles.dot}/>
                                 <Text style={defaultStyles.restaurants}
-                                      onPress={() => this.restaurantProfile(item.name, item.promotions)}>{item.name}</Text>
+                                      onPress={() => this.restaurantProfile(
+                                      item.name,
+                                      item.promotions,
+                                      item.address,
+                                      item.city,
+                                      item.state,
+                                      item.zip,
+                                      item.hours,
+                                      item.map_image,
+                                      item.website_url,
+                                      item.menu_url,
+                                      item.google_map_url
+                                      )}>{item.name}</Text>
                             </View>
                             <View style={styles.categories}>{cats}</View>
                             <View style={defaultStyles.separator}/>

@@ -16,11 +16,12 @@ var api = {
         var username = 'leonmagee';
         var password = 'G5waB0NrQ9LxPy7wx5ngw';
         var url = 'https://conciergereservation.com/wp-json/wp/v2/reservation';
+        const base64 = require('base-64');
 
         return fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    'Authorization': 'Basic ' + base64.encode(username + ":" + password),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(reservation_data)
@@ -29,14 +30,16 @@ var api = {
     },
 
     postUsers() {
+
         var username = 'leonmagee';
         var password = 'G5waB0NrQ9LxPy7wx5ngw';
         var url = 'https://conciergereservation.com/wp-json/cr/users_info';
+        const base64 = require('base-64');
 
         return fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    'Authorization': 'Basic ' + base64.encode(username + ":" + password),
                     'Content-Type': 'application/json',
                     'cache-control': 'no-cache',
                 },
@@ -53,11 +56,13 @@ var api = {
         var username = 'leonmagee';
         var password = 'G5waB0NrQ9LxPy7wx5ngw';
         var url = `https://conciergereservation.com/wp-json/acf/v2/post/${id}`;
+        const base64 = require('base-64');
 
         return fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    //'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    'Authorization': 'Basic ' + base64.encode(username + ":" + password),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(reservation_data_meta)
@@ -70,11 +75,13 @@ var api = {
         let username = 'leonmagee';
         let password = 'G5waB0NrQ9LxPy7wx5ngw';
         let url = 'https://www.conciergereservation.com/wp-json/cr/email';
+        const base64 = require('base-64');
 
         return fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    //'Authorization': 'Basic ' + btoa(username + ":" + password),
+                    'Authorization': 'Basic ' + base64.encode(username + ":" + password),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)

@@ -1,8 +1,7 @@
-/**
- * Import React Components
- */
 import React, {Component} from 'react';
-var defaultStyles = require('./../DefaultStyles');
+import ErrorMessage from '../Parts/ErrorMessage';
+import ActivityButton from '../Parts/ActivityButton';
+var defaultStyles = require('../DefaultStyles');
 
 import {
     View,
@@ -15,35 +14,7 @@ import {
 
 class LogIn extends React.Component {
 
-    constructor(props) {
-        super(props);
-        // this.state = {
-        //     username: '',
-        //     isLoading: false,
-        //     error: false,
-        //     mode: false, // toggle btw 'concierge' and 'restaurant'
-        //     //conciergeID: 'aaaaa', // toggle for dev - secret id now
-        //     conciergeID: false,
-        //     restaurantID: false,
-        //     loggedIn: false, // toggle for dev
-        //     wrongLogin: false,
-        //     //loggedIn: true,
-        // }
-    }
-
     render() {
-
-        let loginButton = !this.props.isLoading ?
-            <Text style={defaultStyles.buttonText}>Log In</Text> :
-            <ActivityIndicator
-                animating={this.props.isLoading}
-                color="#FFF"
-                size="small"></ActivityIndicator>;
-
-        let errorMessage = this.props.wrongLogin ?
-            <View><Text style={styles.errorMessage}>INCORRECT USER ID</Text></View> :
-            <View></View>;
-
         return (
             <View>
                 <TextInput
@@ -51,16 +22,16 @@ class LogIn extends React.Component {
                     placeholder='Your Concierge or Restaurant ID'
                     placeholderTextColor="#999"
                     autoCapitalize="none"
-                    onChangeText={(conciergeID) => this.setState({conciergeID})}
+                    onChangeText={this.props.inputAction}
                     autoCorrect={false}
                 />
-                {errorMessage}
+                <ErrorMessage error={this.props.wrongLogin} message="INCORRECT USER ID"/>
                 <TouchableHighlight
                     style={defaultStyles.button}
-                    onPress={this.props.logInClick()}
-                    underlayColor="white">
+                    onPress={this.props.login}
+                    underlayColor="#4EB3A2">
                     <View>
-                        {loginButton}
+                        <ActivityButton loading={this.props.loading}/>
                     </View>
                 </TouchableHighlight>
             </View>

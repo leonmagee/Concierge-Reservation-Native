@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import SuccessMessage from './SuccessMessage';
 import homeRoute from './Main'; // should be a better way to route back home
-
+import ErrorMessage from './Parts/ErrorMessage';
 var api = require('../Utils/api');
 var defaultStyles = require('./DefaultStyles');
 
@@ -39,6 +39,8 @@ class ReservationForm extends React.Component {
             conciergeID: props.conciergeID,
             conciergeName: props.conciergeName, // pass down concierge ID from initial login...
             restaurant: props.name,
+            mapURL: props.mapURL,
+            needInfo: false,
         }
     }
 
@@ -46,7 +48,18 @@ class ReservationForm extends React.Component {
 
         this.setState({
             isLoading: true,
+            needInfo: false,
         })
+
+        if (!( this.state.name && this.state.email )) {
+
+            this.setState({
+                needInfo: true,
+                isLoading: false,
+            })
+
+            return;
+        }
 
         var reservation_data = {
             title: 'Referral for ' + this.state.name + ' at ' + this.state.restaurant,
@@ -68,6 +81,7 @@ class ReservationForm extends React.Component {
             name: this.state.name,
             concierge: this.state.conciergeName,
             email: this.state.email,
+            map_url: this.state.mapURL,
         }
 
         api.postReservations(reservation_data).then((res) => {
@@ -86,6 +100,7 @@ class ReservationForm extends React.Component {
                         },
                         //leftButtonIcon: ???,
                         leftButtonTitle: 'Home',
+                        navigationBarHidden: false,
                         onLeftButtonPress: () => {
                             this.props.navigator.popToTop();
                             //this.getInChat = false;
@@ -121,10 +136,11 @@ class ReservationForm extends React.Component {
                     onChangeText={(email) => this.setState({email})}
                     autoCorrect={false}
                 />
+                <ErrorMessage error={this.state.needInfo} message="NAME AND EMAIL REQUIRED"/>
                 <TouchableHighlight
                     style={defaultStyles.button}
                     onPress={this.submitForm.bind(this, this.state.data)}
-                    underlayColor="white">
+                    underlayColor="#4EB3A2">
                     <Text style={defaultStyles.buttonText}>Submit</Text>
                 </TouchableHighlight>
                 <ActivityIndicator

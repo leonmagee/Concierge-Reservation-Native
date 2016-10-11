@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 
 /**
  * Styles - not sure how to reuse these through out the app...
- * $color-primary: #08C5B1; // blue green
- * $color-second: #E97C5F; // red
- * $color-third: #EFD14F; // yellow
+ * $color-primary: #08C5B1; // blue green - rgb(20%,73%,67%)
+ * $color-second: #E97C5F; // red - rgb(91%,49%,37%)
+ * $color-third: #EFD14F; // yellow - rgb(94%,82%,31%)
  */
 
 import {

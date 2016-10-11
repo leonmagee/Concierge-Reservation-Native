@@ -1,22 +1,27 @@
-/**
- * @todo refactor this - separate into smaller components
- */
 import React, {Component} from 'react';
+var ReactNative = require('react-native'); // better to do it this way???
+import HomeLogo from './Home/HomeLogo';
+import HomeButtons from './Home/HomeButtons';
 import Restaurant from './Restaurant';
 import Reservation from './Reservation';
-
+import Login from './Home/LogIn';
 var api = require('../Utils/api');
-var defaultStyles = require('./DefaultStyles');
 
-import {
+// import {
+//     View,
+//     WebView,
+//     Text,
+//     Image,
+//     StyleSheet,
+// } from 'react-native';
+
+var {
     View,
+    WebView,
     Text,
     Image,
     StyleSheet,
-    TouchableHighlight,
-    TextInput,
-    ActivityIndicator
-} from 'react-native';
+} = ReactNative;
 
 
 var styles = StyleSheet.create({
@@ -32,21 +37,6 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center'
     },
-    logoWrap: {
-        marginBottom: 50,
-    },
-    logoImage: {
-        width: 300,
-        height: 192,
-    },
-    buttonWrap: {
-        backgroundColor: '#222',
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 10,
-        paddingBottom: 8,
-        borderRadius: 5,
-    },
     logOut: {
         color: '#FAFAFA',
         backgroundColor: 'transparent',
@@ -54,15 +44,6 @@ var styles = StyleSheet.create({
         marginTop: 15,
         fontWeight: 'bold',
     },
-    errorMessage: {
-        padding: 8,
-        backgroundColor: '#E97C5F',
-        color: '#FFF',
-        textAlign: 'center',
-        marginTop: 8,
-        borderRadius: 5,
-        fontWeight: 'bold',
-    }
 });
 
 class Main extends React.Component {
@@ -73,13 +54,13 @@ class Main extends React.Component {
             isLoading: false,
             error: false,
             mode: false, // this will toggle btw 'concierge' and 'restaurant' - determined by login?
-            //conciergeID: 'aaaaa', // toggle for dev - secret id now
             conciergeID: false,
+            //conciergeID: 'aaaaa', // toggle for dev
             conciergeName: false,
             restaurantID: false,
-            loggedIn: false, // toggle for dev
+            loggedIn: false,
+            //loggedIn: true, // toggle for dev
             wrongLogin: false,
-            //loggedIn: true,
         }
     }
 
@@ -90,7 +71,8 @@ class Main extends React.Component {
             passProps: {
                 conciergeID: this.state.conciergeID,
                 conciergeName: this.state.conciergeName,
-            }
+            },
+            navigationBarHidden: false
         });
     }
 
@@ -100,7 +82,8 @@ class Main extends React.Component {
             component: Reservation,
             passProps: {
                 conciergeID: this.state.conciergeID,
-            }
+            },
+            navigationBarHidden: false
         });
     }
 
@@ -121,6 +104,7 @@ class Main extends React.Component {
         })
 
         api.postUsers().then((res) => {
+
             for (var item of res) {
                 if (this.state.conciergeID === item.login_id) {
                     this.setState({
@@ -144,52 +128,20 @@ class Main extends React.Component {
     }
 
     render() {
-        let loginButton = !this.state.isLoading ?
-            <Text style={defaultStyles.buttonText}>Log In</Text> :
-            <ActivityIndicator
-                animating={this.state.isLoading}
-                color="#FFF"
-                size="small"></ActivityIndicator>;
-
-        let errorMessage = this.state.wrongLogin ?
-            <View><Text style={styles.errorMessage}>INCORRECT USER ID</Text></View> :
-            <View></View>;
 
         let mainContent = !this.state.loggedIn ?
+            <Login
+                inputAction={(conciergeID) => this.setState({conciergeID})}
+                wrongLogin={this.state.wrongLogin}
+                loading={this.state.isLoading}
+                login={() => this.logIn()}
+            />
+            :
             <View>
-                <TextInput
-                    style={defaultStyles.input}
-                    placeholder='Your Concierge or Restaurant ID'
-                    placeholderTextColor="#999"
-                    autoCapitalize="none"
-                    onChangeText={(conciergeID) => this.setState({conciergeID})}
-                    autoCorrect={false}
+                <HomeButtons
+                    restaurantClick={() => this.handleClickRestaurant()}
+                    reservationClick={() => this.handleClickReservation()}
                 />
-                {errorMessage}
-                <TouchableHighlight
-                    style={defaultStyles.button}
-                    onPress={() => this.logIn()}
-                    underlayColor="white">
-                    <View>
-                        {loginButton}
-                    </View>
-                </TouchableHighlight>
-            </View> :
-            <View>
-                <View style={styles.buttonWrap}>
-                    <TouchableHighlight
-                        style={defaultStyles.button}
-                        onPress={this.handleClickRestaurant.bind(this)}
-                        underlayColor="white">
-                        <Text style={defaultStyles.buttonText}>View Restaurants</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        style={defaultStyles.button2}
-                        onPress={this.handleClickReservation.bind(this)}
-                        underlayColor="white">
-                        <Text style={defaultStyles.buttonText}>Your Reservations</Text>
-                    </TouchableHighlight>
-                </View>
                 <View>
                     <Text style={styles.logOut} onPress={this.logOut.bind(this)}>Log Out</Text>
                 </View>
@@ -199,10 +151,7 @@ class Main extends React.Component {
         return (
             <Image source={require('../Assets/img/homepage-bg-mobile.png')} style={styles.container}>
                 <View style={styles.mainContainer}>
-                    <View style={styles.logoWrap}>
-                        <Image style={styles.logoImage} initWidth="250" initHeight="160"
-                               source={require('../Assets/img/logo.png')}></Image>
-                    </View>
+                    <HomeLogo />
                     {mainContent}
                 </View>
             </Image>
