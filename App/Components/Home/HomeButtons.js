@@ -27,13 +27,13 @@ class HomeButtons extends React.Component {
         return (
             <View style={styles.buttonWrap}>
                 <TouchableHighlight
-                    style={defaultStyles.button}
+                    style={[defaultStyles.button,defaultStyles.buttonColorBlue]}
                     onPress={this.props.restaurantClick}
                     underlayColor="#4EB3A2">
                     <Text style={defaultStyles.buttonText}>View Restaurants</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    style={defaultStyles.button2}
+                    style={[defaultStyles.button, defaultStyles.buttonColorRed]}
                     onPress={this.props.reservationClick}
                     underlayColor="#EF765E">
                     <Text style={defaultStyles.buttonText}>Your Reservations</Text>

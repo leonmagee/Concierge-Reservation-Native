@@ -27,7 +27,7 @@ class LogIn extends React.Component {
                 />
                 <ErrorMessage error={this.props.wrongLogin} message="INCORRECT USER ID"/>
                 <TouchableHighlight
-                    style={defaultStyles.button}
+                    style={[defaultStyles.button, defaultStyles.buttonColorBlue]}
                     onPress={this.props.login}
                     underlayColor="#4EB3A2">
                     <View>

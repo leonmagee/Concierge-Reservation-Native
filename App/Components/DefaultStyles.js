@@ -25,35 +25,25 @@ var defaultStyles = StyleSheet.create({
     button: {
         height: 45,
         //flexDirection: 'row',
+        // backgroundColor: '#08C5B1',
+        // borderColor: '#08C5B1',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: 10,
+        justifyContent: 'center'
+    },
+    buttonColorBlue: {
         backgroundColor: '#08C5B1',
         borderColor: '#08C5B1',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        justifyContent: 'center'
     },
-    button2: {
-        height: 45,
-        //flexDirection: 'row',
+    buttonColorRed: {
         backgroundColor: '#E97C5F',
         borderColor: '#E97C5F',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        justifyContent: 'center'
     },
-    button3: {
-        height: 45,
-        //flexDirection: 'row',
+    buttonColorYellow: {
         backgroundColor: '#EFD14F',
         borderColor: '#EFD14F',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        justifyContent: 'center'
     },
     flexWrap: {
         alignItems: 'center',
@@ -71,6 +61,9 @@ var defaultStyles = StyleSheet.create({
         height: 12,
         width: 12,
         marginRight: 4,
+    },
+    dotColorBlue: {
+     // need to build this out....
     },
     dot2: {
         backgroundColor: '#e97c5f',

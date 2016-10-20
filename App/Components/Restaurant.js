@@ -102,9 +102,9 @@ class Restaurant extends React.Component {
                                       item.zip,
                                       item.hours,
                                       item.map_image,
-                                      item.website_url,
-                                      item.menu_url,
-                                      item.google_map_url
+                                      item.website,
+                                      item.menu,
+                                      item.google_map
                                       )}>{item.name}</Text>
                             </View>
                             <View style={styles.categories}>{cats}</View>

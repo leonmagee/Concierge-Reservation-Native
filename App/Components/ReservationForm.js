@@ -82,6 +82,9 @@ class ReservationForm extends React.Component {
             concierge: this.state.conciergeName,
             email: this.state.email,
             map_url: this.state.mapURL,
+            website_url: this.props.websiteURL,
+            menu_url: this.props.menuURL,
+            google_map_url: this.props.googleMapURL,
         }
 
         api.postReservations(reservation_data).then((res) => {
@@ -138,7 +141,7 @@ class ReservationForm extends React.Component {
                 />
                 <ErrorMessage error={this.state.needInfo} message="NAME AND EMAIL REQUIRED"/>
                 <TouchableHighlight
-                    style={defaultStyles.button}
+                    style={[defaultStyles.button, defaultStyles.buttonColorBlue]}
                     onPress={this.submitForm.bind(this, this.state.data)}
                     underlayColor="#4EB3A2">
                     <Text style={defaultStyles.buttonText}>Submit</Text>

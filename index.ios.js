@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Main from './App/Components/Main'
+import AnimationTest from './App/Components/AnimationTest'
 
 import {
     AppRegistry,
@@ -25,6 +26,7 @@ class ConciergeReservation extends Component {
                 style={styles.container}
                 initialRoute={{
                     component: Main,
+                    //component: AnimationTest,
                     title: 'Home',
                 }}
                 navigationBarHidden={true}

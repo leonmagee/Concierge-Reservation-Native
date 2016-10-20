@@ -175,7 +175,7 @@ class RestaurantProfile extends React.Component {
                     </View>
                 </View>
                 <TouchableHighlight
-                    style={defaultStyles.button}
+                    style={[defaultStyles.button, defaultStyles.buttonColorBlue]}
                     onPress={this.processDiscount.bind(this)}
                     underlayColor="#4EB3A2">
                     <Text style={defaultStyles.buttonText}>Coupon / Reservation</Text>

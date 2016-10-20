@@ -31,11 +31,8 @@ var styles = StyleSheet.create({
         height: null,
     },
     mainContainer: {
-        flex: 1,
-        padding: 30,
-        marginTop: 35,
-        flexDirection: 'column',
-        justifyContent: 'center'
+        paddingLeft: 30,
+        paddingRight: 30,
     },
     logOut: {
         color: '#FAFAFA',

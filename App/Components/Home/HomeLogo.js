@@ -7,10 +7,6 @@ import {
 } from 'react-native';
 
 let styles = StyleSheet.create({
-    logoWrap: {
-        flex: 1,
-        height: 350,
-    },
     logoImage: {
         resizeMode: 'contain',
         width: null,
@@ -22,7 +18,7 @@ class HomeLogo extends React.Component {
     render() {
 
         return (
-            <View style={styles.logoWrap}>
+            <View>
                 <Image
                     style={styles.logoImage}
                     source={require('../../Assets/img/logo.png')}
