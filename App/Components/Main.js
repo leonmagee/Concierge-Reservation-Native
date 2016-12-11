@@ -23,6 +23,7 @@ var {
     StyleSheet,
 } = ReactNative;
 
+//var View = ReactNative.View; // destructuring
 
 var styles = StyleSheet.create({
     container: {
@@ -125,6 +126,9 @@ class Main extends React.Component {
     }
 
     render() {
+
+        // var name = 'Leonard';
+        // debugger;
 
         let mainContent = !this.state.loggedIn ?
             <Login

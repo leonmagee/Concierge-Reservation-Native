@@ -139,6 +139,13 @@ class ReservationForm extends React.Component {
                     onChangeText={(email) => this.setState({email})}
                     autoCorrect={false}
                 />
+                <Text style={defaultStyles.label}>Customer Address</Text>
+                <TextInput
+                    style={defaultStyles.input}
+                    autoCapitalize="none"
+                    onChangeText={(address) => this.setState({address})}
+                    autoCorrect={false}
+                />
                 <ErrorMessage error={this.state.needInfo} message="NAME AND EMAIL REQUIRED"/>
                 <TouchableHighlight
                     style={[defaultStyles.button, defaultStyles.buttonColorBlue]}
